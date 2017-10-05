@@ -31,7 +31,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
@@ -127,9 +126,7 @@ public class Fragment_today extends Fragment {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name, time, date, amount, status;
-        //        CardView cardview;
-        LinearLayout mainlayout;
+        TextView name;
 
         ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.item_today, parent, false));

@@ -46,10 +46,11 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         Fragment selectedFragment = null;
                         switch (item.getItemId()) {
-                            case R.id.salesroute:
+
+                            case R.id.todaysroute:
                                 selectedFragment = Fragment_today.newInstance();
                                 break;
-                            case R.id.todaysroute:
+                            case R.id.salesroute:
                                 selectedFragment = ItemTwoFragment.newInstance();
                                 break;
                             case R.id.settings:
