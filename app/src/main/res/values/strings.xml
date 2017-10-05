@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name">SalesSticks</string>
+    <string name="user_name">USER NAME</string>
+    <string name="password">PASSWORD</string>
+    <string name="login">LOGIN</string>
+    <string name="salesroute">SALES ROUTE</string>
+    <string name="todayroute">TODAYS ROUTE</string>
+    <string name="settings">SETTINGS</string>
 
-
-
-    <string name="item_1">Item 1</string>
-    <string name="item_2">Item 2</string>
-    <string name="item_3">Item 3</string>
     <string name="prompt_email">Email</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -16,7 +17,4 @@
     </string>
 
 
-    <string name="user_name">USER NAME</string>
-    <string name="password">PASSWORD</string>
-    <string name="login">LOGIN</string>
 </resources>

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_item1"
-        android:icon="@drawable/ic_account_box_black_24dp"
-        android:title="@string/item_1"/>
+        android:id="@+id/todaysroute"
+        android:icon="@drawable/todays"
+        android:title="@string/todayroute" />
     <item
-        android:id="@+id/action_item2"
-        android:icon="@drawable/ic_account_circle_black_24dp"
-        android:title="@string/item_2"/>
+        android:id="@+id/salesroute"
+        android:icon="@drawable/sales"
+        android:title="@string/salesroute" />
+
     <item
-        android:id="@+id/action_item3"
-        android:icon="@drawable/ic_assignment_ind_black_24dp"
-        android:title="@string/item_3"/>
+        android:id="@+id/settings"
+        android:icon="@drawable/settings"
+        android:title="@string/settings" />
 </menu>

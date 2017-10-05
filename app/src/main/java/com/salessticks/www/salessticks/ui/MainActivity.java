@@ -46,13 +46,13 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         Fragment selectedFragment = null;
                         switch (item.getItemId()) {
-                            case R.id.action_item1:
-                                selectedFragment = ItemOneFragment.newInstance();
+                            case R.id.salesroute:
+                                selectedFragment = Fragment_today.newInstance();
                                 break;
-                            case R.id.action_item2:
+                            case R.id.todaysroute:
                                 selectedFragment = ItemTwoFragment.newInstance();
                                 break;
-                            case R.id.action_item3:
+                            case R.id.settings:
                                 selectedFragment = ItemThreeFragment.newInstance();
                                 break;
                         }
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, ItemOneFragment.newInstance());
+        transaction.replace(R.id.frame_layout, Fragment_today.newInstance());
         transaction.commit();
 
         //Used to select an item programmatically
