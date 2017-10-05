@@ -1,9 +1,9 @@
 package com.salessticks.www.salessticks.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
@@ -16,6 +16,7 @@ import com.salessticks.www.salessticks.BaseActivity;
 import com.salessticks.www.salessticks.R;
 import com.salessticks.www.salessticks.util.Keys;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -37,6 +38,8 @@ public class Activity_login extends BaseActivity {
 
         login = (Button) findViewById(R.id.login);
         layout_loading = (ProgressBar) findViewById(R.id.progressBar);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
 
         login.setOnClickListener(new OnClickListener() {
@@ -66,13 +69,22 @@ public class Activity_login extends BaseActivity {
                     public void onResponse(JSONObject response) {
                         System.out.println(response.toString());
                         layout_loading.setVisibility(View.GONE);
-                        moveNextPage(MainActivity.class);
+
+                        try {
+                            AppController.setsharedprefString(Keys.token, response.getString("Token"));
+                            AppController.setsharedprefString(Keys.userId, response.getString("Id"));
+
+                            moveNextPage(MainActivity.class);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
                     public void onError(ANError anError) {
                         layout_loading.setVisibility(View.GONE);
-                        System.out.println("Error: "+anError.getErrorBody());
+                        System.out.println("Error: " + anError.getErrorBody());
                     }
                 })
         ;

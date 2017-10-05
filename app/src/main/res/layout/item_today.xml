@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cardview"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
@@ -9,26 +8,24 @@
     android:layout_marginEnd="10dp"
     android:layout_marginStart="10dp"
     android:layout_marginTop="12dp"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:gravity="center">
 
     <LinearLayout
-        android:id="@+id/mainlayout"
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:paddingEnd="10dp"
-        android:paddingStart="10dp">
-
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/mainlayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_gravity="center"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingEnd="10dp"
+            >
 
             <TextView
                 android:id="@+id/name"
@@ -39,51 +36,66 @@
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/time"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="9.00 am - 12.00 pm"
-                android:textColor="@color/colorPrimary"
-                android:textSize="13dp" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:text="06/05/2017"
-                android:textSize="12dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/total_visits"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="13dp" />
+
+                <TextView
+                    android:id="@+id/totalvisit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:text="12"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="center"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/amount"
+                android:id="@+id/visits"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:text="6"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:text=">"
                 android:textColor="@color/colorPrimary"
-                android:textSize="14dp"
-                />
+                android:textSize="14dp" />
 
         </LinearLayout>
     </LinearLayout>
-</android.support.v7.widget.CardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/main"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorAccent"/>
+</RelativeLayout>

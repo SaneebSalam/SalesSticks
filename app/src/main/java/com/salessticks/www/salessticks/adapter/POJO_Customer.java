@@ -5,7 +5,7 @@ package com.salessticks.www.salessticks.adapter;
  * on 6/11/2017.
  */
 
-public class POJO_history {
+public class POJO_Customer {
 
     public String getName() {
         return name;

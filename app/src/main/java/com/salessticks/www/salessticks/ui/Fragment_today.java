@@ -23,12 +23,14 @@ package com.salessticks.www.salessticks.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,10 +38,15 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.salessticks.www.salessticks.AppController;
 import com.salessticks.www.salessticks.R;
-import com.salessticks.www.salessticks.adapter.POJO_history;
+import com.salessticks.www.salessticks.adapter.POJO_Customer;
 import com.salessticks.www.salessticks.util.Keys;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -49,8 +56,11 @@ import java.util.List;
 public class Fragment_today extends Fragment {
 
     RecyclerView recyclerView;
-    public static List<POJO_history> feedItems;
+    ImageView logo;
+    public static List<POJO_Customer> feedItems;
     ContentAdapter adapter;
+    JSONArray Listarray;
+    JSONObject obj_catdata;
 
     public static Fragment_today newInstance() {
         Fragment_today fragment = new Fragment_today();
@@ -61,6 +71,7 @@ public class Fragment_today extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -69,28 +80,29 @@ public class Fragment_today extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_today, container, false);
         recyclerView = rootView.findViewById(R.id.my_recycler_view);
+        logo = rootView.findViewById(R.id.logo);
+
+        Glide.with(getActivity()).load(ContextCompat.getDrawable(getActivity(), R.mipmap.ic_launcher))
+                .apply(RequestOptions.circleCropTransform()).into(logo);
 
         feedItems = new ArrayList<>();
-
         adapter = new ContentAdapter(recyclerView.getContext(), feedItems);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
         recyclerView.setAdapter(adapter);
 
-        GetHistory();
-
+        GetCustomer();
 
         return rootView;
     }
 
     private class ContentAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-        private List<POJO_history> feedItems;
+        private List<POJO_Customer> feedItems;
         Context mContext;
-        private int lastPosition = -1;
 
-        ContentAdapter(Context context, List<POJO_history> feedItems) {
+        ContentAdapter(Context context, List<POJO_Customer> feedItems) {
             this.feedItems = feedItems;
             this.mContext = context;
         }
@@ -106,7 +118,6 @@ public class Fragment_today extends Fragment {
 //            holder.frame.setBackgroundColor(feedItems.get(position).getColor());
             holder.name.setText(feedItems.get(position).getName());
 
-
         }
 
         @Override
@@ -117,19 +128,12 @@ public class Fragment_today extends Fragment {
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView name, time, date, amount, status;
-//        CardView cardview;
+        //        CardView cardview;
         LinearLayout mainlayout;
 
         ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.item_today, parent, false));
-//            frame = (FrameLayout) itemView.findViewById(frame);
-            name = (TextView) itemView.findViewById(R.id.name);
-            time = (TextView) itemView.findViewById(R.id.time);
-            date = (TextView) itemView.findViewById(R.id.date);
-            amount = (TextView) itemView.findViewById(R.id.amount);
-            status = (TextView) itemView.findViewById(R.id.status);
-//            cardview = (CardView) itemView.findViewById(R.id.cardview);
-            mainlayout = (LinearLayout) itemView.findViewById(R.id.mainlayout);
+            name = itemView.findViewById(R.id.name);
 
 
 //            itemView.setOnClickListener(new View.OnClickListener() {
@@ -148,13 +152,13 @@ public class Fragment_today extends Fragment {
         }
     }
 
-    public void GetHistory() {
+    public void GetCustomer() {
 //        layout_loading.setVisibility(View.VISIBLE);
 
         AndroidNetworking.post(Keys.BaseURL + "api/Route/GetSalePersonCustomers")
-                .addBodyParameter("salePersonId", "6")
+                .addBodyParameter("salePersonId", AppController.getsharedprefString(Keys.userId))
                 .addBodyParameter("Date", "2017-10-04T11:23:15.9835306-07:00")
-                .addBodyParameter("Token", "EAAAAIZElWEdXXyLTuuju61CoLrAd5QJcDETp58YsmuKMmAUEfa6nzRTk2aJUAFZ0EvcO5zS7pac+PRYWBJ0jSBibgp3DsAgyN48rJNqgRPXUzgWpFADj0k3\\/KFZrvYL\\/pSQ2GXRPotB2FRw\\/DlXtu6+64TY9PX4+kQYsz3R664wXdtAdcwZNh+BGUKV6Tod8h3cOl4AIuXvVfZ7HBPnYrlx7fVfxs+ML4GzNpuyWEfmFe1AlYJZB6liILEWeCKnd2\\/QvvQUwqbl5To+Dmnbj+0HtQKk81z+5pL4Lzjfu+NyeUmUlxtoSTjjR387sSPD66qeIVrgvAJj1ULt0+hbUCIlqJ0=")
+                .addBodyParameter("Token", AppController.getsharedprefString(Keys.token))
                 .addBodyParameter("DeviceId", "1")
 
                 .setTag("getticketdetails")
@@ -165,7 +169,7 @@ public class Fragment_today extends Fragment {
                     public void onResponse(JSONObject response) {
                         // do anything with response
                         System.out.println("response: " + response.toString());
-
+                        parseJsonFeed_customer(response);
 
 //                        layout_loading.setVisibility(View.GONE);
                     }
@@ -177,5 +181,34 @@ public class Fragment_today extends Fragment {
 //                        layout_loading.setVisibility(View.GONE);
                     }
                 });
+    }
+
+    void parseJsonFeed_customer(JSONObject response) {
+        feedItems.clear();
+        try {
+            Listarray = response.getJSONArray("List");
+            if (Listarray.length() != 0) {
+                for (int i = 0; i < Listarray.length(); i++) {
+                    obj_catdata = (JSONObject) Listarray.get(i);
+                    POJO_Customer items = new POJO_Customer();
+//                        items.setId(obj_catdata.getString("CustomerId"));
+                    items.setName(obj_catdata.getString("CustomerName"));
+
+
+                    feedItems.add(items);
+                }
+            }
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
