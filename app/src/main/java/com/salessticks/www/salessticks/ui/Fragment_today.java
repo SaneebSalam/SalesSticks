@@ -23,7 +23,6 @@ package com.salessticks.www.salessticks.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,8 +36,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.salessticks.www.salessticks.AppController;
 import com.salessticks.www.salessticks.R;
 import com.salessticks.www.salessticks.adapter.POJO_Customer;
@@ -81,8 +78,8 @@ public class Fragment_today extends Fragment {
         recyclerView = rootView.findViewById(R.id.my_recycler_view);
         logo = rootView.findViewById(R.id.logo);
 
-        Glide.with(getActivity()).load(ContextCompat.getDrawable(getActivity(), R.mipmap.ic_launcher))
-                .apply(RequestOptions.circleCropTransform()).into(logo);
+//        Glide.with(getActivity()).load(ContextCompat.getDrawable(getActivity(), R.mipmap.ic_launcher))
+//                .apply(RequestOptions.circleCropTransform()).into(logo);
 
         feedItems = new ArrayList<>();
         adapter = new ContentAdapter(recyclerView.getContext(), feedItems);
@@ -91,9 +88,41 @@ public class Fragment_today extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
         recyclerView.setAdapter(adapter);
 
-        GetCustomer();
+        GetRouteByDate();
 
         return rootView;
+    }
+
+
+    public void GetRouteByDate() {
+//        layout_loading.setVisibility(View.VISIBLE);
+
+        AndroidNetworking.post(Keys.BaseURL + "api/Route/GetSalePersonRouteByDate")
+//                .addBodyParameter("salePersonId", AppController.getsharedprefString(Keys.userId))
+                .addBodyParameter("Date", "2017-10-06T23:43:50.7161287-07:00")
+                .addBodyParameter("Token", AppController.getsharedprefString(Keys.token))
+//                .addBodyParameter("DeviceId", "1")
+
+                .setTag("GetRouteByDate")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        System.out.println("response: " + response.toString());
+                        parseJsonFeed_customer(response);
+
+//                        layout_loading.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        System.out.println(error.getErrorCode() + " :" + error.getErrorBody());
+
+//                        layout_loading.setVisibility(View.GONE);
+                    }
+                });
     }
 
     private class ContentAdapter extends RecyclerView.Adapter<ViewHolder> {
@@ -147,37 +176,6 @@ public class Fragment_today extends Fragment {
 //                }
 //            });
         }
-    }
-
-    public void GetCustomer() {
-//        layout_loading.setVisibility(View.VISIBLE);
-
-        AndroidNetworking.post(Keys.BaseURL + "api/Route/GetSalePersonCustomers")
-                .addBodyParameter("salePersonId", AppController.getsharedprefString(Keys.userId))
-                .addBodyParameter("Date", "2017-10-04T11:23:15.9835306-07:00")
-                .addBodyParameter("Token", AppController.getsharedprefString(Keys.token))
-                .addBodyParameter("DeviceId", "1")
-
-                .setTag("getticketdetails")
-                .setPriority(Priority.MEDIUM)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // do anything with response
-                        System.out.println("response: " + response.toString());
-                        parseJsonFeed_customer(response);
-
-//                        layout_loading.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onError(ANError error) {
-                        System.out.println(error.getErrorCode() + " :" + error.getErrorBody());
-
-//                        layout_loading.setVisibility(View.GONE);
-                    }
-                });
     }
 
     void parseJsonFeed_customer(JSONObject response) {
