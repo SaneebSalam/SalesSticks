@@ -1,36 +1,15 @@
-/*
- * Copyright (c) 2017. Truiton (http://www.truiton.com/).
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- * Mohit Gupt (https://github.com/mohitgupt)
- *
- */
-
 package com.salessticks.www.salessticks.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
@@ -38,6 +17,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.salessticks.www.salessticks.AppController;
+import com.salessticks.www.salessticks.BaseActivity;
 import com.salessticks.www.salessticks.R;
 import com.salessticks.www.salessticks.adapter.POJO_Customer;
 import com.salessticks.www.salessticks.util.Keys;
@@ -49,62 +29,53 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.salessticks.www.salessticks.ui.Fragment_today.feedItems;
 
-public class Fragment_today extends Fragment {
+public class Activity_customers extends BaseActivity {
 
     RecyclerView recyclerView;
-    ImageView logo;
-    public static List<POJO_Customer> feedItems;
     ContentAdapter adapter;
     JSONArray Listarray;
     JSONObject obj_catdata;
 
-    public static Fragment_today newInstance() {
-        Fragment_today fragment = new Fragment_today();
-
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.layout_customers);
 
-    }
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_today, container, false);
-        recyclerView = rootView.findViewById(R.id.my_recycler_view);
-        logo = rootView.findViewById(R.id.logo);
-
-//        Glide.with(getActivity()).load(ContextCompat.getDrawable(getActivity(), R.mipmap.ic_launcher))
-//                .apply(RequestOptions.circleCropTransform()).into(logo);
+        recyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
 
         feedItems = new ArrayList<>();
         adapter = new ContentAdapter(recyclerView.getContext(), feedItems);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         recyclerView.setAdapter(adapter);
 
-        GetRouteByDate();
+        GetCustomer();
 
-        return rootView;
+
     }
 
 
-    public void GetRouteByDate() {
+    public void GetCustomer() {
 //        layout_loading.setVisibility(View.VISIBLE);
 
-        AndroidNetworking.post(Keys.BaseURL + "api/Route/GetSalePersonRouteByDate")
-//                .addBodyParameter("salePersonId", AppController.getsharedprefString(Keys.userId))
-                .addBodyParameter("Date", "2017-10-06T23:43:50.7161287-07:00")
-                .addBodyParameter("Token", AppController.getsharedprefString(Keys.token))
-//                .addBodyParameter("DeviceId", "1")
+        AndroidNetworking.get(Keys.BaseURL + "api/Customer/getcustomerbyrouteid/")
+                .addQueryParameter("id", "9")
+                .addQueryParameter("Token", AppController.getsharedprefString(Keys.token))
 
-                .setTag("GetRouteByDate")
+                .setTag("GetCustomer")
                 .setPriority(Priority.MEDIUM)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
@@ -163,16 +134,19 @@ public class Fragment_today extends Fragment {
             name = itemView.findViewById(R.id.name);
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Intent intent = new Intent(getActivity(), Activity_customers.class);
-//                    intent.putExtra(Keys.routeid, String.valueOf(feedItems.get(getAdapterPosition()).getId()));
-                    getActivity().startActivity(intent);
-
-                }
-            });
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                    Intent intent = new Intent(Activity_Categories.this, Activity_Vouchers.class);
+//                    intent.putExtra(Keys.CatID, String.valueOf(feedItems.get(getAdapterPosition()).getId()));
+//                    intent.putExtra(Keys.CardName, feedItems.get(getAdapterPosition()).getName());
+//                    Activity_Categories.this.startActivity(intent);
+//                    overridePendingTransition(R.anim.anim_slide_in_left,
+//                            R.anim.anim_slide_out_left);
+//
+//                }
+//            });
         }
     }
 
@@ -192,7 +166,7 @@ public class Fragment_today extends Fragment {
                 }
             }
 
-            getActivity().runOnUiThread(new Runnable() {
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
 
@@ -204,4 +178,11 @@ public class Fragment_today extends Fragment {
             e.printStackTrace();
         }
     }
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode) {
+
+    }
+
 }

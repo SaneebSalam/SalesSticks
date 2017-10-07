@@ -7,8 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -20,7 +18,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -30,10 +27,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.salessticks.www.salessticks.util.GPSTracker;
 import com.salessticks.www.salessticks.util.Keys;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 
 /*
@@ -155,7 +148,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
             lng = Double.toString(location.getLongitude());
             AppController.setsharedprefString(Keys.KEY_LAT, lat);
             AppController.setsharedprefString(Keys.KEY_LNG, lng);
-            getlocationname();
+//            getlocationname();
             if (lat.isEmpty()) {
                 if (gps.canGetLocation()) {
                     gps = new GPSTracker(context);
@@ -228,30 +221,30 @@ public abstract class BaseActivity extends AppCompatActivity implements Location
         }
     }
 
-    public void getlocationname() {
-        Geocoder geocoder;
-        List<Address> addresses;
-        geocoder = new Geocoder(this, Locale.getDefault());
-        try {
-            if (application.getPlace().isEmpty()) {
-                addresses = geocoder.getFromLocation(Double.parseDouble(AppController
-                        .getsharedprefString(Keys.KEY_LAT)), Double.parseDouble(AppController
-                        .getsharedprefString(Keys.KEY_LNG)), 1);
-                Address returnedAddress = addresses.get(0);
-                String place = returnedAddress.getAddressLine(1);
-                String country = returnedAddress.getAddressLine(2);
-                AppController.setsharedprefString(Keys.LocationPlace, place);
-                AppController.setsharedprefString(Keys.Locationcountry, country);
-
-                application.setPlace(place);
-            }
-
-        } catch (IOException ignored) {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public void getlocationname() {
+//        Geocoder geocoder;
+//        List<Address> addresses;
+//        geocoder = new Geocoder(this, Locale.getDefault());
+//        try {
+//            if (application.getPlace().isEmpty()) {
+//                addresses = geocoder.getFromLocation(Double.parseDouble(AppController
+//                        .getsharedprefString(Keys.KEY_LAT)), Double.parseDouble(AppController
+//                        .getsharedprefString(Keys.KEY_LNG)), 1);
+//                Address returnedAddress = addresses.get(0);
+//                String place = returnedAddress.getAddressLine(1);
+//                String country = returnedAddress.getAddressLine(2);
+//                AppController.setsharedprefString(Keys.LocationPlace, place);
+//                AppController.setsharedprefString(Keys.Locationcountry, country);
+//
+//                application.setPlace(place);
+//            }
+//
+//        } catch (IOException ignored) {
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     protected void onStop() {

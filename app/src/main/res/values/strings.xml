@@ -16,6 +16,7 @@
         completions."
     </string>
     <string name="total_visits">Total Visits</string>
+    <string name="title_activity_customers">Activity_customers</string>
 
 
 </resources>
