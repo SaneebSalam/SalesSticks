@@ -104,19 +104,9 @@ public class Fragment_today extends Fragment {
 
     public void GetRouteByDate() {
 //        layout_loading.setVisibility(View.VISIBLE);
-        Date currentTime = Calendar.getInstance().getTime();
-        Calendar c = Calendar.getInstance();
-
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
-
-        String date = df.format(c.getTime());
-
-
-System.out.println("date:................. "+ date);
-        AndroidNetworking.post(Keys.BaseURL + "api/Route/GetSalePersonRouteByDate")
+                AndroidNetworking.post(Keys.BaseURL + "api/Route/GetSalePersonRouteByDate")
 //                .addBodyParameter("salePersonId", AppController.getsharedprefString(Keys.userId))
-                .addBodyParameter("Date", "2017-10-08T23:43:50.7161287-07:00")
+                .addBodyParameter("Date", AppController.getCurrentDate())
                 .addBodyParameter("Token", AppController.getsharedprefString(Keys.token))
 //                .addBodyParameter("DeviceId", "1")
 

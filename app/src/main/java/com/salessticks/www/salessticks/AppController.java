@@ -25,6 +25,7 @@ import com.salessticks.www.salessticks.util.Keys;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -247,23 +248,17 @@ public class AppController extends Application {
         }
     }
 
-    public static String getdateformat(String date) {
-        String oldFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS";
-        String newFormat = "MMM dd, yyyy  hh:mm a";
+    public static String getCurrentDate() {
+        Calendar c = Calendar.getInstance();
 
-        String formatedDate = "";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(oldFormat, Locale.ENGLISH);
-        Date myDate = null;
-        try {
-            myDate = dateFormat.parse(date);
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-        SimpleDateFormat timeFormat = new SimpleDateFormat(newFormat, Locale.ENGLISH);
-        formatedDate = timeFormat.format(myDate);
 
-        return formatedDate;
+        String date = df.format(c.getTime());
+
+
+        System.out.println("date:................. " + date);
+        return date;
 
     }
 
