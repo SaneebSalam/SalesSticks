@@ -14,4 +14,5 @@ public class Keys {
     public static String Locationcountry = "Locationcountry";
     public static String LocationPlace = "LocationPlace";
     public static String Language = "Language";
+    public static String userName = "userName";
 }

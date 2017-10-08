@@ -54,6 +54,7 @@ public class Fragment_today extends Fragment {
 
     RecyclerView recyclerView;
     ImageView logo;
+    TextView name;
     public static List<POJO_Customer> feedItems;
     ContentAdapter adapter;
     JSONArray Listarray;
@@ -77,7 +78,10 @@ public class Fragment_today extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_today, container, false);
         recyclerView = rootView.findViewById(R.id.my_recycler_view);
+        name = rootView.findViewById(R.id.name);
         logo = rootView.findViewById(R.id.logo);
+
+        name.setText(AppController.getsharedprefString(Keys.userName));
 
 //        Glide.with(getActivity()).load(ContextCompat.getDrawable(getActivity(), R.mipmap.ic_launcher))
 //                .apply(RequestOptions.circleCropTransform()).into(logo);
@@ -146,6 +150,7 @@ public class Fragment_today extends Fragment {
 
 //            holder.frame.setBackgroundColor(feedItems.get(position).getColor());
             holder.name.setText(feedItems.get(position).getName());
+            holder.subtext.setText(feedItems.get(position).getRoutarea());
 
         }
 
@@ -156,12 +161,12 @@ public class Fragment_today extends Fragment {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name;
+        TextView name, subtext;
 
         ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.item_today, parent, false));
             name = itemView.findViewById(R.id.name);
-
+            subtext = itemView.findViewById(R.id.subtext);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -185,8 +190,8 @@ public class Fragment_today extends Fragment {
                     obj_catdata = (JSONObject) Listarray.get(i);
                     POJO_Customer items = new POJO_Customer();
 //                        items.setId(obj_catdata.getString("CustomerId"));
-                    items.setName(obj_catdata.getString("RouteName")+" / "+obj_catdata.getString("RouteArea"));
-
+                    items.setName(obj_catdata.getString("RouteName"));
+                    items.setRoutarea(obj_catdata.getString("RouteArea"));
 
                     feedItems.add(items);
                 }

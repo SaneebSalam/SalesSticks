@@ -7,6 +7,17 @@ package com.salessticks.www.salessticks.adapter;
 
 public class POJO_Customer {
 
+    private String name;
+    private String routarea;
+
+    public String getRoutarea() {
+        return routarea;
+    }
+
+    public void setRoutarea(String routarea) {
+        this.routarea = routarea;
+    }
+
     public String getName() {
         return name;
     }
@@ -14,18 +25,6 @@ public class POJO_Customer {
     public void setName(String name) {
         this.name = name;
     }
-
-    private String name;
-
-    public String getStatus() {
-        return Status;
-    }
-
-    public void setStatus(String status) {
-        Status = status;
-    }
-
-    private String Status;
 
 
     public String getDate() {

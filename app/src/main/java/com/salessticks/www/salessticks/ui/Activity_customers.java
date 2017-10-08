@@ -16,7 +16,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.salessticks.www.salessticks.AppController;
 import com.salessticks.www.salessticks.BaseActivity;
 import com.salessticks.www.salessticks.R;
 import com.salessticks.www.salessticks.adapter.POJO_Customer;
@@ -53,7 +52,7 @@ public class Activity_customers extends BaseActivity {
         });
 
 
-        recyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         feedItems = new ArrayList<>();
         adapter = new ContentAdapter(recyclerView.getContext(), feedItems);
@@ -72,8 +71,9 @@ public class Activity_customers extends BaseActivity {
 //        layout_loading.setVisibility(View.VISIBLE);
 
         AndroidNetworking.get(Keys.BaseURL + "api/Customer/getcustomerbyrouteid/")
-                .addQueryParameter("id", "9")
-                .addQueryParameter("Token", AppController.getsharedprefString(Keys.token))
+                .addQueryParameter("id", "1")
+//                .addQueryParameter("Token", AppController.getsharedprefString(Keys.token))
+//                .addQueryParameter("Date", "2017-10-06T23:43:50.7161287-07:00")
 
                 .setTag("GetCustomer")
                 .setPriority(Priority.MEDIUM)
@@ -117,6 +117,7 @@ public class Activity_customers extends BaseActivity {
 
 //            holder.frame.setBackgroundColor(feedItems.get(position).getColor());
             holder.name.setText(feedItems.get(position).getName());
+            holder.subtext.setText(feedItems.get(position).getRoutarea());
 
         }
 
@@ -127,11 +128,12 @@ public class Activity_customers extends BaseActivity {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name;
+        TextView name, subtext;
 
         ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.item_today, parent, false));
             name = itemView.findViewById(R.id.name);
+            subtext = itemView.findViewById(R.id.subtext);
 
 
 //            itemView.setOnClickListener(new View.OnClickListener() {
@@ -159,7 +161,8 @@ public class Activity_customers extends BaseActivity {
                     obj_catdata = (JSONObject) Listarray.get(i);
                     POJO_Customer items = new POJO_Customer();
 //                        items.setId(obj_catdata.getString("CustomerId"));
-                    items.setName(obj_catdata.getString("RouteName")+" / "+obj_catdata.getString("RouteArea"));
+                    items.setName(obj_catdata.getString("RouteName"));
+                    items.setRoutarea(obj_catdata.getString("Address"));
 
 
                     feedItems.add(items);

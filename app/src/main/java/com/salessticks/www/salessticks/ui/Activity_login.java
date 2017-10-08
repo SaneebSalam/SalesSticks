@@ -73,6 +73,7 @@ public class Activity_login extends BaseActivity {
                         try {
                             AppController.setsharedprefString(Keys.token, response.getString("Token"));
                             AppController.setsharedprefString(Keys.userId, response.getString("Id"));
+                            AppController.setsharedprefString(Keys.userName, response.getString("DisplayName"));
 
                             moveNextPage(MainActivity.class);
 
