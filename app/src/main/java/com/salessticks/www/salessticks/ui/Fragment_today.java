@@ -46,7 +46,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -101,10 +104,19 @@ public class Fragment_today extends Fragment {
 
     public void GetRouteByDate() {
 //        layout_loading.setVisibility(View.VISIBLE);
+        Date currentTime = Calendar.getInstance().getTime();
+        Calendar c = Calendar.getInstance();
 
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+
+        String date = df.format(c.getTime());
+
+
+System.out.println("date:................. "+ date);
         AndroidNetworking.post(Keys.BaseURL + "api/Route/GetSalePersonRouteByDate")
 //                .addBodyParameter("salePersonId", AppController.getsharedprefString(Keys.userId))
-                .addBodyParameter("Date", "2017-10-06T23:43:50.7161287-07:00")
+                .addBodyParameter("Date", "2017-10-08T23:43:50.7161287-07:00")
                 .addBodyParameter("Token", AppController.getsharedprefString(Keys.token))
 //                .addBodyParameter("DeviceId", "1")
 
@@ -116,7 +128,7 @@ public class Fragment_today extends Fragment {
                     public void onResponse(JSONObject response) {
                         // do anything with response
                         System.out.println("response: " + response.toString());
-                        parseJsonFeed_customer(response);
+                        parseJsonFeed_rout(response);
 
 //                        layout_loading.setVisibility(View.GONE);
                     }
@@ -181,7 +193,7 @@ public class Fragment_today extends Fragment {
         }
     }
 
-    void parseJsonFeed_customer(JSONObject response) {
+    void parseJsonFeed_rout(JSONObject response) {
         feedItems.clear();
         try {
             Listarray = response.getJSONArray("List");

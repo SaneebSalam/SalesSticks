@@ -74,7 +74,6 @@ public class Activity_customers extends BaseActivity {
                 .addQueryParameter("id", "1")
 //                .addQueryParameter("Token", AppController.getsharedprefString(Keys.token))
 //                .addQueryParameter("Date", "2017-10-06T23:43:50.7161287-07:00")
-
                 .setTag("GetCustomer")
                 .setPriority(Priority.MEDIUM)
                 .build()
