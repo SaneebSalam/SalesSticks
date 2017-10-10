@@ -46,10 +46,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 
@@ -64,15 +61,8 @@ public class Fragment_today extends Fragment {
     JSONObject obj_catdata;
 
     public static Fragment_today newInstance() {
-        Fragment_today fragment = new Fragment_today();
 
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+        return new Fragment_today();
     }
 
     @Override
@@ -105,8 +95,8 @@ public class Fragment_today extends Fragment {
     public void GetRouteByDate() {
 //        layout_loading.setVisibility(View.VISIBLE);
                 AndroidNetworking.post(Keys.BaseURL + "api/Route/GetSalePersonRouteByDate")
-//                .addBodyParameter("salePersonId", AppController.getsharedprefString(Keys.userId))
-                .addBodyParameter("Date", AppController.getCurrentDate())
+                .addBodyParameter("Date", "2017-10-09")
+//                .addBodyParameter("Date", AppController.getCurrentDate())
                 .addBodyParameter("Token", AppController.getsharedprefString(Keys.token))
 //                .addBodyParameter("DeviceId", "1")
 

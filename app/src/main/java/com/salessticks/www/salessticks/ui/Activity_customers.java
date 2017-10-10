@@ -16,6 +16,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.salessticks.www.salessticks.AppController;
 import com.salessticks.www.salessticks.BaseActivity;
 import com.salessticks.www.salessticks.R;
 import com.salessticks.www.salessticks.adapter.POJO_Customer;
@@ -72,7 +73,7 @@ public class Activity_customers extends BaseActivity {
 
         AndroidNetworking.get(Keys.BaseURL + "api/Customer/getcustomerbyrouteid/")
                 .addQueryParameter("id", "1")
-//                .addQueryParameter("Token", AppController.getsharedprefString(Keys.token))
+                .addQueryParameter("Token", AppController.getsharedprefString(Keys.token))
 //                .addQueryParameter("Date", "2017-10-06T23:43:50.7161287-07:00")
                 .setTag("GetCustomer")
                 .setPriority(Priority.MEDIUM)

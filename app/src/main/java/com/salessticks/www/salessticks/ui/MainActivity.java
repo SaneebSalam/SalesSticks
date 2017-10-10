@@ -27,11 +27,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import com.salessticks.www.salessticks.R;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    Fragment fragment_today = null, fragment_salesrout = null, fragment_settings = null;
+    FrameLayout today_layout, salesroute_layout, settings_layout;
+    FragmentTransaction transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,33 +46,69 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.navigation);
 
+        today_layout = (FrameLayout) findViewById(R.id.todaysroute_layout);
+        salesroute_layout = (FrameLayout) findViewById(R.id.salesroute_layout);
+        settings_layout = (FrameLayout) findViewById(R.id.settings_layout);
+
         bottomNavigationView.setOnNavigationItemSelectedListener
                 (new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         Fragment selectedFragment = null;
+                        transaction = getSupportFragmentManager().beginTransaction();
+
                         switch (item.getItemId()) {
 
                             case R.id.todaysroute:
-                                selectedFragment = Fragment_today.newInstance();
+
+                                today_layout.setVisibility(View.VISIBLE);
+                                salesroute_layout.setVisibility(View.GONE);
+                                settings_layout.setVisibility(View.GONE);
+
+                                selectedFragment = fragment_today;
                                 break;
                             case R.id.salesroute:
-                                selectedFragment = ItemTwoFragment.newInstance();
+
+                                today_layout.setVisibility(View.GONE);
+                                salesroute_layout.setVisibility(View.VISIBLE);
+                                settings_layout.setVisibility(View.GONE);
+
+                                if (fragment_salesrout != null)
+                                    selectedFragment = fragment_salesrout;
+                                else {
+                                    fragment_salesrout = ItemTwoFragment.newInstance();
+                                    selectedFragment = fragment_salesrout;
+
+                                    transaction.replace(R.id.salesroute_layout, selectedFragment);
+                                }
+
                                 break;
                             case R.id.settings:
-                                selectedFragment = ItemThreeFragment.newInstance();
+                                today_layout.setVisibility(View.GONE);
+                                salesroute_layout.setVisibility(View.GONE);
+                                settings_layout.setVisibility(View.VISIBLE);
+
+                                if (fragment_settings != null)
+                                    selectedFragment = fragment_settings;
+                                else {
+                                    fragment_settings = ItemThreeFragment.newInstance();
+                                    selectedFragment = fragment_settings;
+
+                                    transaction.replace(R.id.settings_layout, selectedFragment);
+                                }
+
                                 break;
                         }
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_layout, selectedFragment);
+                        transaction.show(selectedFragment);
                         transaction.commit();
                         return true;
                     }
                 });
 
         //Manually displaying the first fragment - one time only
+        fragment_today = Fragment_today.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, Fragment_today.newInstance());
+        transaction.replace(R.id.todaysroute_layout, fragment_today);
         transaction.commit();
 
         //Used to select an item programmatically
