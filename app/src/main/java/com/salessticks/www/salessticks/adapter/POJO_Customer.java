@@ -10,6 +10,16 @@ public class POJO_Customer {
     private String name;
     private String routarea;
 
+    public String getRoutID() {
+        return routID;
+    }
+
+    public void setRoutID(String routID) {
+        this.routID = routID;
+    }
+
+    private String routID;
+
     public String getRoutarea() {
         return routarea;
     }

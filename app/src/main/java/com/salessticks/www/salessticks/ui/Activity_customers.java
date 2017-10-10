@@ -71,9 +71,9 @@ public class Activity_customers extends BaseActivity {
     public void GetCustomer() {
 //        layout_loading.setVisibility(View.VISIBLE);
 
-        AndroidNetworking.get(Keys.BaseURL + "api/Customer/getcustomerbyrouteid/")
-                .addQueryParameter("id", "1")
-                .addQueryParameter("Token", AppController.getsharedprefString(Keys.token))
+        AndroidNetworking.post(Keys.BaseURL + "api/Customer/getcustomerbyrouteid/")
+                .addBodyParameter("RouteID", "2")
+                .addBodyParameter("Token", AppController.getsharedprefString(Keys.token))
 //                .addQueryParameter("Date", "2017-10-06T23:43:50.7161287-07:00")
                 .setTag("GetCustomer")
                 .setPriority(Priority.MEDIUM)

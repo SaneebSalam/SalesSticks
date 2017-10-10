@@ -94,7 +94,7 @@ public class Fragment_today extends Fragment {
 
     public void GetRouteByDate() {
 //        layout_loading.setVisibility(View.VISIBLE);
-                AndroidNetworking.post(Keys.BaseURL + "api/Route/GetSalePersonRouteByDate")
+        AndroidNetworking.post(Keys.BaseURL + "api/Route/GetSalePersonRouteByDate")
                 .addBodyParameter("Date", "2017-10-09")
 //                .addBodyParameter("Date", AppController.getCurrentDate())
                 .addBodyParameter("Token", AppController.getsharedprefString(Keys.token))
@@ -165,7 +165,7 @@ public class Fragment_today extends Fragment {
                 public void onClick(View v) {
 
                     Intent intent = new Intent(getActivity(), Activity_customers.class);
-//                    intent.putExtra(Keys.routeid, String.valueOf(feedItems.get(getAdapterPosition()).getId()));
+                    intent.putExtra(Keys.routeid, String.valueOf(feedItems.get(getAdapterPosition()).getRoutID()));
                     getActivity().startActivity(intent);
 
                 }
@@ -181,7 +181,7 @@ public class Fragment_today extends Fragment {
                 for (int i = 0; i < Listarray.length(); i++) {
                     obj_catdata = (JSONObject) Listarray.get(i);
                     POJO_Customer items = new POJO_Customer();
-//                        items.setId(obj_catdata.getString("CustomerId"));
+                    items.setRoutID(obj_catdata.getString("Id"));
                     items.setName(obj_catdata.getString("RouteName"));
                     items.setRoutarea(obj_catdata.getString("RouteArea"));
 
