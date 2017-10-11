@@ -55,7 +55,7 @@ public class Fragment_today extends Fragment {
     RecyclerView recyclerView;
     ImageView logo;
     TextView name;
-    public static List<POJO_Customer> feedItems;
+    public  List<POJO_Customer> feedItems;
     ContentAdapter adapter;
     JSONArray Listarray;
     JSONObject obj_catdata;

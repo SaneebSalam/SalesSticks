@@ -63,7 +63,8 @@
                 android:text="6"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
             <TextView
                 android:layout_width="wrap_content"

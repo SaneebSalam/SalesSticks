@@ -2,8 +2,6 @@ package com.salessticks.www.salessticks.ui;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,31 +28,24 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class Activity_customers extends BaseActivity {
+public class Activity_Sub_Category extends BaseActivity {
 
     RecyclerView recyclerView;
     ContentAdapter adapter;
     JSONArray Listarray;
     JSONObject obj_catdata;
+    String CategoryId;
     public  List<POJO_Customer> feedItems;
     ProgressBar layout_loading;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_customers);
+        setContentView(R.layout.layout_category);
 
+        CategoryId = getIntent().getStringExtra(Keys.productid);
         layout_loading = (ProgressBar) findViewById(R.id.progressBar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
 
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -66,17 +57,17 @@ public class Activity_customers extends BaseActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         recyclerView.setAdapter(adapter);
 
-        GetCustomer();
+        GetCategory();
 
 
     }
 
 
-    public void GetCustomer() {
+    public void GetCategory() {
         layout_loading.setVisibility(View.VISIBLE);
 
-        AndroidNetworking.post(Keys.BaseURL + "api/Customer/getcustomerbyrouteid/")
-                .addBodyParameter("RouteID", "2")
+        AndroidNetworking.post(Keys.BaseURL + "api/Product/GetProductByCategoryId")
+                .addBodyParameter("CategoryId", CategoryId)
                 .addBodyParameter("Token", AppController.getsharedprefString(Keys.token))
 //                .addQueryParameter("Date", "2017-10-06T23:43:50.7161287-07:00")
                 .setTag("GetCustomer")
@@ -140,14 +131,19 @@ public class Activity_customers extends BaseActivity {
             subtext = itemView.findViewById(R.id.subtext);
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    moveNextPagewitoutfinish(Activity_Category.class);
-
-                }
-            });
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                    Intent intent = new Intent(Activity_Categories.this, Activity_Vouchers.class);
+//                    intent.putExtra(Keys.CatID, String.valueOf(feedItems.get(getAdapterPosition()).getId()));
+//                    intent.putExtra(Keys.CardName, feedItems.get(getAdapterPosition()).getName());
+//                    Activity_Categories.this.startActivity(intent);
+//                    overridePendingTransition(R.anim.anim_slide_in_left,
+//                            R.anim.anim_slide_out_left);
+//
+//                }
+//            });
         }
     }
 
@@ -160,8 +156,7 @@ public class Activity_customers extends BaseActivity {
                     obj_catdata = (JSONObject) Listarray.get(i);
                     POJO_Customer items = new POJO_Customer();
 //                        items.setId(obj_catdata.getString("CustomerId"));
-                    items.setName(obj_catdata.getString("RouteName"));
-                    items.setRoutarea(obj_catdata.getString("Address"));
+                    items.setName(obj_catdata.getString("ProductName"));
 
 
                     feedItems.add(items);
