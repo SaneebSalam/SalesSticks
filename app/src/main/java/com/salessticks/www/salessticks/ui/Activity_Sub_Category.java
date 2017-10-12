@@ -31,7 +31,7 @@ import java.util.List;
 public class Activity_Sub_Category extends BaseActivity {
 
     RecyclerView recyclerView;
-    ContentAdapter adapter;
+    ContentAdapterSub adaptersub;
     JSONArray Listarray;
     JSONObject obj_catdata;
     String CategoryId;
@@ -51,19 +51,19 @@ public class Activity_Sub_Category extends BaseActivity {
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         feedItems = new ArrayList<>();
-        adapter = new ContentAdapter(recyclerView.getContext(), feedItems);
+        adaptersub = new ContentAdapterSub(recyclerView.getContext(), feedItems);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adaptersub);
 
-        GetCategory();
+        GetSubCategory();
 
 
     }
 
 
-    public void GetCategory() {
+    public void GetSubCategory() {
         layout_loading.setVisibility(View.VISIBLE);
 
         AndroidNetworking.post(Keys.BaseURL + "api/Product/GetProductByCategoryId")
@@ -78,7 +78,7 @@ public class Activity_Sub_Category extends BaseActivity {
                     public void onResponse(JSONObject response) {
                         // do anything with response
                         System.out.println("response: " + response.toString());
-                        parseJsonFeed_customer(response);
+                        parseJsonFeed_subcat(response);
 
                         layout_loading.setVisibility(View.GONE);
                     }
@@ -92,23 +92,23 @@ public class Activity_Sub_Category extends BaseActivity {
                 });
     }
 
-    private class ContentAdapter extends RecyclerView.Adapter<ViewHolder> {
+    private class ContentAdapterSub extends RecyclerView.Adapter<ViewHolderSub> {
 
         private List<POJO_Customer> feedItems;
         Context mContext;
 
-        ContentAdapter(Context context, List<POJO_Customer> feedItems) {
+        ContentAdapterSub(Context context, List<POJO_Customer> feedItems) {
             this.feedItems = feedItems;
             this.mContext = context;
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()), parent);
+        public ViewHolderSub onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ViewHolderSub(LayoutInflater.from(parent.getContext()), parent);
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolderSub holder, int position) {
 
 //            holder.frame.setBackgroundColor(feedItems.get(position).getColor());
             holder.name.setText(feedItems.get(position).getName());
@@ -122,10 +122,10 @@ public class Activity_Sub_Category extends BaseActivity {
         }
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolderSub extends RecyclerView.ViewHolder {
         TextView name, subtext;
 
-        ViewHolder(LayoutInflater inflater, ViewGroup parent) {
+        ViewHolderSub(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.item_today, parent, false));
             name = itemView.findViewById(R.id.name);
             subtext = itemView.findViewById(R.id.subtext);
@@ -147,7 +147,7 @@ public class Activity_Sub_Category extends BaseActivity {
         }
     }
 
-    void parseJsonFeed_customer(JSONObject response) {
+    void parseJsonFeed_subcat(JSONObject response) {
         feedItems.clear();
         try {
             Listarray = response.getJSONArray("List");
@@ -167,7 +167,7 @@ public class Activity_Sub_Category extends BaseActivity {
                 @Override
                 public void run() {
 
-                    adapter.notifyDataSetChanged();
+                    adaptersub.notifyDataSetChanged();
                 }
             });
 
