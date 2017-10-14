@@ -17,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:paddingBottom="50dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="50dp">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -37,19 +37,19 @@
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
                     android:drawablePadding="15dp"
                     android:drawableStart="@drawable/user"
                     android:hint="@string/user_name"
-                    android:textColorHint="@color/white"
-                    android:backgroundTint="@color/white"
-                    android:textColorLink="@color/white"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="USER NAME"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPersonName"
                     android:maxLines="1"
-                    android:textCursorDrawable="@drawable/cursor_color"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textColorLink="@color/white"
+                    android:textCursorDrawable="@drawable/cursor_color" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -62,14 +62,14 @@
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:drawablePadding="15dp"
+                    android:drawableStart="@drawable/password"
                     android:hint="@string/password"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="PASSWORD"
                     android:imeOptions="actionUnspecified"
-                    android:backgroundTint="@color/white"
                     android:inputType="textPassword"
-                    android:drawablePadding="15dp"
-                    android:drawableStart="@drawable/password"
                     android:maxLines="1"
                     android:textColor="@color/white" />
 
@@ -82,20 +82,28 @@
                 android:layout_height="45dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                android:textColor="@color/white"
                 android:background="@drawable/rounded_corner_white"
                 android:text="@string/login"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>
 
-    <ProgressBar
+    <RelativeLayout
         android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:visibility="gone" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_trans"
+        android:visibility="gone">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible" />
+
+    </RelativeLayout>
 </RelativeLayout>

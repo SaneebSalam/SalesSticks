@@ -2,6 +2,8 @@ package com.salessticks.www.salessticks.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,7 +40,7 @@ public class Activity_Category extends BaseActivity {
     JSONObject obj_catdata;
     public List<POJO_Customer> feedItems, feedItemsSub;
     ProgressBar layout_loading;
-    int selectedPosition=0;
+    int selectedPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,7 @@ public class Activity_Category extends BaseActivity {
         adaptersub = new ContentAdapterSub(recycler_view_sub.getContext(), feedItemsSub);
         recycler_view_sub.setHasFixedSize(true);
         recycler_view_sub.setLayoutManager(new LinearLayoutManager(this));
-        recycler_view_sub.setLayoutManager(new GridLayoutManager(this, 1));
+        recycler_view_sub.setLayoutManager(new GridLayoutManager(this, 3));
         recycler_view_sub.setAdapter(adaptersub);
 
 
@@ -122,12 +124,15 @@ public class Activity_Category extends BaseActivity {
 
 //            holder.frame.setBackgroundColor(feedItems.get(position).getColor());
             holder.name.setText(feedItems.get(position).getName());
-            holder.subtext.setText(feedItems.get(position).getRoutarea());
 
-            if(selectedPosition==position)
+            if (selectedPosition == position) {
                 holder.layout.setSelected(true);
-            else
+                holder.name.setTextColor(ContextCompat.getColor(Activity_Category.this,R.color.white));
+            }
+            else {
                 holder.layout.setSelected(false);
+                holder.name.setTextColor(ContextCompat.getColor(Activity_Category.this,R.color.colorPrimary));
+            }
 
 
         }
@@ -139,13 +144,12 @@ public class Activity_Category extends BaseActivity {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name, subtext;
+        TextView name;
         RelativeLayout layout;
 
         ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.item_category, parent, false));
             name = itemView.findViewById(R.id.name);
-            subtext = itemView.findViewById(R.id.subtext);
             layout = itemView.findViewById(R.id.layout);
 
 
@@ -159,7 +163,8 @@ public class Activity_Category extends BaseActivity {
 
                     GetSubCategory(String.valueOf(feedItems.get(getAdapterPosition()).getId()));
 
-                    selectedPosition=getAdapterPosition();
+                    selectedPosition = getAdapterPosition();
+
                     adapter.notifyDataSetChanged();
                 }
             });
@@ -266,7 +271,6 @@ public class Activity_Category extends BaseActivity {
 
 //            holder.frame.setBackgroundColor(feedItems.get(position).getColor());
             holder.name.setText(feedItems.get(position).getName());
-            holder.subtext.setText(feedItems.get(position).getRoutarea());
 
         }
 
@@ -277,12 +281,11 @@ public class Activity_Category extends BaseActivity {
     }
 
     class ViewHolderSub extends RecyclerView.ViewHolder {
-        TextView name, subtext;
+        TextView name;
 
         ViewHolderSub(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.item_today, parent, false));
+            super(inflater.inflate(R.layout.item_subcategory, parent, false));
             name = itemView.findViewById(R.id.name);
-            subtext = itemView.findViewById(R.id.subtext);
 
 
 //            itemView.setOnClickListener(new View.OnClickListener() {

@@ -6,6 +6,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -27,7 +28,7 @@ import org.json.JSONObject;
 public class Activity_login extends BaseActivity {
 
     Button login;
-    ProgressBar layout_loading;
+    RelativeLayout layout_loading;
 
 
     @Override
@@ -38,7 +39,7 @@ public class Activity_login extends BaseActivity {
         getSupportActionBar().hide();
 
         login = (Button) findViewById(R.id.login);
-        layout_loading = (ProgressBar) findViewById(R.id.progressBar);
+        layout_loading = (RelativeLayout) findViewById(R.id.progressBar);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 

@@ -3,7 +3,11 @@
     <color name="colorPrimary">#0061ad</color>
     <color name="colorPrimaryDark">#0061ad</color>
     <color name="colorAccent">#00a6e1</color>
+    <color name="colorselect">#04a8e2</color>
     <color name="white">#FFFFFF</color>
     <color name="ash">#efeaea</color>
     <color name="white_trans">#99FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="black_trans">#99000000</color>
+
 </resources>

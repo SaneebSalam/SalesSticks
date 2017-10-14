@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ash"
     tools:context="com.salessticks.www.salessticks.ui.Activity_customers">
 
     <LinearLayout
@@ -15,7 +14,6 @@
             android:id="@+id/my_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/ash"
             android:orientation="horizontal"
             android:scrollbars="vertical" />
 
@@ -23,7 +21,6 @@
             android:id="@+id/my_recycler_view_sub"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/ash"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:scrollbars="vertical" />
