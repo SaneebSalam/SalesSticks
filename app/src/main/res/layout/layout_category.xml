@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-
     android:layout_height="match_parent"
+    android:background="@color/ash"
     tools:context="com.salessticks.www.salessticks.ui.Activity_customers">
 
     <LinearLayout
@@ -16,7 +15,7 @@
             android:id="@+id/my_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/ash"
             android:orientation="horizontal"
             android:scrollbars="vertical" />
 
@@ -24,8 +23,8 @@
             android:id="@+id/my_recycler_view_sub"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/ash"
             android:layout_marginTop="10dp"
-            android:background="@color/white"
             android:orientation="horizontal"
             android:scrollbars="vertical" />
     </LinearLayout>
