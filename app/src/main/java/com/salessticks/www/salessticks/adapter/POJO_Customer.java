@@ -7,6 +7,15 @@ package com.salessticks.www.salessticks.adapter;
 
 public class POJO_Customer {
 
+    public POJO_Customer(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public POJO_Customer() {
+
+    }
+
     public String getId() {
         return id;
     }

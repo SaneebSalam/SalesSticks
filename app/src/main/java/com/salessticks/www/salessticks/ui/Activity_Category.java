@@ -1,15 +1,18 @@
 package com.salessticks.www.salessticks.ui;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,6 +25,7 @@ import com.salessticks.www.salessticks.AppController;
 import com.salessticks.www.salessticks.BaseActivity;
 import com.salessticks.www.salessticks.R;
 import com.salessticks.www.salessticks.adapter.POJO_Customer;
+import com.salessticks.www.salessticks.db.DB_Cart;
 import com.salessticks.www.salessticks.util.Keys;
 
 import org.json.JSONArray;
@@ -30,6 +34,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Created by Saneeb Salam
+ * on 10/15/2017.
+ */
 
 public class Activity_Category extends BaseActivity {
 
@@ -41,12 +50,15 @@ public class Activity_Category extends BaseActivity {
     public List<POJO_Customer> feedItems, feedItemsSub;
     ProgressBar layout_loading;
     int selectedPosition = 0;
+    AlertDialog.Builder builder;
+    DB_Cart db_cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_category);
 
+        db_cart = new DB_Cart(this);
 
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         recycler_view_sub = (RecyclerView) findViewById(R.id.my_recycler_view_sub);
@@ -56,9 +68,9 @@ public class Activity_Category extends BaseActivity {
         feedItems = new ArrayList<>();
         adapter = new ContentAdapter(recyclerView.getContext(), feedItems);
         recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-//        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        //        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(adapter);
 
         GetCategory();
@@ -79,9 +91,9 @@ public class Activity_Category extends BaseActivity {
         layout_loading.setVisibility(View.VISIBLE);
 
         AndroidNetworking.post(Keys.BaseURL + "api/Product/GetAllCategory/")
-//                .addBodyParameter("RouteID", "2")
+                //                .addBodyParameter("RouteID", "2")
                 .addBodyParameter("Token", AppController.getsharedprefString(Keys.token))
-//                .addQueryParameter("Date", "2017-10-06T23:43:50.7161287-07:00")
+                //                .addQueryParameter("Date", "2017-10-06T23:43:50.7161287-07:00")
                 .setTag("GetCustomer")
                 .setPriority(Priority.MEDIUM)
                 .build()
@@ -122,16 +134,15 @@ public class Activity_Category extends BaseActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
 
-//            holder.frame.setBackgroundColor(feedItems.get(position).getColor());
+            //            holder.frame.setBackgroundColor(feedItems.get(position).getColor());
             holder.name.setText(feedItems.get(position).getName());
 
             if (selectedPosition == position) {
                 holder.layout.setSelected(true);
-                holder.name.setTextColor(ContextCompat.getColor(Activity_Category.this,R.color.white));
-            }
-            else {
+                holder.name.setTextColor(ContextCompat.getColor(Activity_Category.this, R.color.white));
+            } else {
                 holder.layout.setSelected(false);
-                holder.name.setTextColor(ContextCompat.getColor(Activity_Category.this,R.color.colorPrimary));
+                holder.name.setTextColor(ContextCompat.getColor(Activity_Category.this, R.color.colorPrimary));
             }
 
 
@@ -157,9 +168,9 @@ public class Activity_Category extends BaseActivity {
                 @Override
                 public void onClick(View v) {
 
-//                    Intent intent = new Intent(Activity_Category.this, Activity_Sub_Category.class);
-//                    intent.putExtra(Keys.productid, String.valueOf(feedItems.get(getAdapterPosition()).getId()));
-//                    startActivity(intent);
+                    //                    Intent intent = new Intent(Activity_Category.this, Activity_Sub_Category.class);
+                    //                    intent.putExtra(Keys.productid, String.valueOf(feedItems.get(getAdapterPosition()).getId()));
+                    //                    startActivity(intent);
 
                     GetSubCategory(String.valueOf(feedItems.get(getAdapterPosition()).getId()));
 
@@ -193,7 +204,7 @@ public class Activity_Category extends BaseActivity {
                 for (int i = 0; i < Listarray.length(); i++) {
                     obj_catdata = (JSONObject) Listarray.get(i);
                     items_cat = new POJO_Customer();
-//                        items.setId(obj_catdata.getString("CustomerId"));
+                    //                        items.setId(obj_catdata.getString("CustomerId"));
                     items_cat.setName(obj_catdata.getString("ProductCategoryName"));
                     items_cat.setId(obj_catdata.getString("ProductCategoryId"));
 
@@ -215,12 +226,10 @@ public class Activity_Category extends BaseActivity {
         }
     }
 
-
     @Override
     public void onPermissionsGranted(int requestCode) {
 
     }
-
 
     public void GetSubCategory(String catid) {
         layout_loading.setVisibility(View.VISIBLE);
@@ -228,7 +237,7 @@ public class Activity_Category extends BaseActivity {
         AndroidNetworking.post(Keys.BaseURL + "api/Product/GetProductByCategoryId")
                 .addBodyParameter("CategoryId", catid)
                 .addBodyParameter("Token", AppController.getsharedprefString(Keys.token))
-//                .addQueryParameter("Date", "2017-10-06T23:43:50.7161287-07:00")
+                //                .addQueryParameter("Date", "2017-10-06T23:43:50.7161287-07:00")
                 .setTag("GetCustomer")
                 .setPriority(Priority.MEDIUM)
                 .build()
@@ -269,7 +278,7 @@ public class Activity_Category extends BaseActivity {
         @Override
         public void onBindViewHolder(final ViewHolderSub holder, int position) {
 
-//            holder.frame.setBackgroundColor(feedItems.get(position).getColor());
+            //            holder.frame.setBackgroundColor(feedItems.get(position).getColor());
             holder.name.setText(feedItems.get(position).getName());
 
         }
@@ -288,19 +297,40 @@ public class Activity_Category extends BaseActivity {
             name = itemView.findViewById(R.id.name);
 
 
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                    Intent intent = new Intent(Activity_Categories.this, Activity_Vouchers.class);
-//                    intent.putExtra(Keys.CatID, String.valueOf(feedItems.get(getAdapterPosition()).getId()));
-//                    intent.putExtra(Keys.CardName, feedItems.get(getAdapterPosition()).getName());
-//                    Activity_Categories.this.startActivity(intent);
-//                    overridePendingTransition(R.anim.anim_slide_in_left,
-//                            R.anim.anim_slide_out_left);
-//
-//                }
-//            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    builder = new AlertDialog.Builder(Activity_Category.this);
+
+                    // Get the layout inflater
+                    LayoutInflater inflater = Activity_Category.this.getLayoutInflater();
+                    @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.dialog_cart, null);
+                    TextView item_name = view.findViewById(R.id.item_name);
+                    Button addtocart = view.findViewById(R.id.addtocart);
+
+                    item_name.setText(feedItemsSub.get(getAdapterPosition()).getName());
+
+
+                    builder
+                            .setCancelable(true)
+                            .setView(view);
+                    final AlertDialog dialog = builder.create();
+                    //        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_animation;
+                    dialog.show();
+
+
+                    addtocart.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            db_cart.adddata(new POJO_Customer(feedItemsSub.get(getAdapterPosition()).getId(), feedItemsSub.get(getAdapterPosition()).getName()));
+                            dialog.dismiss();
+                        }
+                    });
+
+                }
+            });
         }
     }
 
@@ -312,7 +342,7 @@ public class Activity_Category extends BaseActivity {
                 for (int i = 0; i < Listarray.length(); i++) {
                     obj_catdata = (JSONObject) Listarray.get(i);
                     POJO_Customer items = new POJO_Customer();
-//                        items.setId(obj_catdata.getString("CustomerId"));
+                    items.setId(obj_catdata.getString("CategoryId"));
                     items.setName(obj_catdata.getString("ProductName"));
 
 
@@ -332,5 +362,6 @@ public class Activity_Category extends BaseActivity {
             e.printStackTrace();
         }
     }
+
 
 }
