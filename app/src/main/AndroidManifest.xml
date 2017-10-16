@@ -28,6 +28,7 @@
         <activity android:name=".ui.Activity_customers" />
         <activity android:name=".ui.Activity_Category" />
         <activity android:name=".ui.Activity_Sub_Category" />
+        <activity android:name=".ui.Activity_Cart"/>
 
     </application>
 

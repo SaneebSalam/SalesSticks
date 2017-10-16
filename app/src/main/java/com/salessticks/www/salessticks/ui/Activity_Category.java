@@ -1,8 +1,8 @@
 package com.salessticks.www.salessticks.ui;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -10,9 +10,13 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -52,13 +56,22 @@ public class Activity_Category extends BaseActivity {
     int selectedPosition = 0;
     AlertDialog.Builder builder;
     DB_Cart db_cart;
+    String CustomerID, CustomerName;
+    EditText quantity;
+    List<POJO_Customer> db_Cart_List;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_category);
 
+        getSupportActionBar().setTitle("Products");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         db_cart = new DB_Cart(this);
+
+        CustomerID = getIntent().getStringExtra(Keys.customerid);
+        CustomerName = getIntent().getStringExtra(Keys.customername);
 
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         recycler_view_sub = (RecyclerView) findViewById(R.id.my_recycler_view_sub);
@@ -84,6 +97,30 @@ public class Activity_Category extends BaseActivity {
         recycler_view_sub.setAdapter(adaptersub);
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_cart, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.cart:
+                Intent intent = new Intent(Activity_Category.this, Activity_Cart.class);
+                intent.putExtra(Keys.customerid, CustomerID);
+                intent.putExtra(Keys.customername, CustomerName);
+                startActivity(intent);
+                return true;
+            default:
+                return false;
+        }
     }
 
 
@@ -301,37 +338,61 @@ public class Activity_Category extends BaseActivity {
                 @Override
                 public void onClick(View v) {
 
-
-                    builder = new AlertDialog.Builder(Activity_Category.this);
-
-                    // Get the layout inflater
-                    LayoutInflater inflater = Activity_Category.this.getLayoutInflater();
-                    @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.dialog_cart, null);
-                    TextView item_name = view.findViewById(R.id.item_name);
-                    Button addtocart = view.findViewById(R.id.addtocart);
-
-                    item_name.setText(feedItemsSub.get(getAdapterPosition()).getName());
-
-
-                    builder
-                            .setCancelable(true)
-                            .setView(view);
-                    final AlertDialog dialog = builder.create();
-                    //        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_animation;
-                    dialog.show();
-
-
-                    addtocart.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            db_cart.adddata(new POJO_Customer(feedItemsSub.get(getAdapterPosition()).getId(), feedItemsSub.get(getAdapterPosition()).getName()));
-                            dialog.dismiss();
-                        }
-                    });
+                    Addtocart(getAdapterPosition());
 
                 }
             });
         }
+    }
+
+    private void Addtocart(final int adapterPosition) {
+
+        builder = new AlertDialog.Builder(Activity_Category.this);
+
+        db_Cart_List = db_cart.getdetailsof_Item(feedItemsSub.get(adapterPosition).getId());
+        // Get the layout inflater
+        LayoutInflater inflater = Activity_Category.this.getLayoutInflater();
+        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.dialog_cart, null);
+        TextView item_name = view.findViewById(R.id.item_name);
+        Button addtocart = view.findViewById(R.id.addtocart);
+        quantity = view.findViewById(R.id.quantity);
+
+        if (db_Cart_List.size() != 0 && db_Cart_List.get(0).getCustomerid().equalsIgnoreCase(CustomerID))
+            quantity.setText(String.valueOf(db_Cart_List.get(0).getQuantity()));
+
+        quantity.setSelection(quantity.getText().length());
+
+        item_name.setText(feedItemsSub.get(adapterPosition).getName());
+
+
+        builder
+                .setCancelable(true)
+                .setView(view);
+        final AlertDialog dialog = builder.create();
+        //        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_animation;
+        dialog.show();
+
+
+        addtocart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                db_Cart_List.clear();
+                db_Cart_List = db_cart.getdetailsof_Item(feedItemsSub.get(adapterPosition).getId());
+                if (db_Cart_List.size() == 0) {
+
+                    db_cart.adddata(new POJO_Customer(CustomerID, feedItemsSub.get(adapterPosition).getId(), feedItemsSub.get(adapterPosition).getName(),
+                            Integer.parseInt(quantity.getText().toString()), 100.00));
+                    dialog.dismiss();
+                    showtoast("Added to cart");
+                } else {
+                    db_cart.Update_Item(new POJO_Customer(CustomerID, feedItemsSub.get(adapterPosition).getId(), feedItemsSub.get(adapterPosition).getName(),
+                            Integer.parseInt(quantity.getText().toString()), 100.00));
+                    dialog.dismiss();
+                    showtoast("Updated to cart");
+
+                }
+            }
+        });
     }
 
     void parseJsonFeed_subcat(JSONObject response) {
@@ -342,7 +403,7 @@ public class Activity_Category extends BaseActivity {
                 for (int i = 0; i < Listarray.length(); i++) {
                     obj_catdata = (JSONObject) Listarray.get(i);
                     POJO_Customer items = new POJO_Customer();
-                    items.setId(obj_catdata.getString("CategoryId"));
+                    items.setId(obj_catdata.getString("ProductId"));
                     items.setName(obj_catdata.getString("ProductName"));
 
 

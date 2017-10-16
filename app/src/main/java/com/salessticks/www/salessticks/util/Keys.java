@@ -10,7 +10,8 @@ public class Keys {
     public static String userId = "userId";
     public static String routeid = "routeid";
     public static String productid = "productid";
-
+    public static String customerid = "customerid";
+    public static String customername = "customername";
 
     public static String Locationcountry = "Locationcountry";
     public static String LocationPlace = "LocationPlace";

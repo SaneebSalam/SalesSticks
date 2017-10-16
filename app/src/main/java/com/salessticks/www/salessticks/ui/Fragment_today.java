@@ -31,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
@@ -55,10 +56,11 @@ public class Fragment_today extends Fragment {
     RecyclerView recyclerView;
     ImageView logo;
     TextView name;
-    public  List<POJO_Customer> feedItems;
+    public List<POJO_Customer> feedItems;
     ContentAdapter adapter;
     JSONArray Listarray;
     JSONObject obj_catdata;
+    ProgressBar layout_loading;
 
     public static Fragment_today newInstance() {
 
@@ -73,6 +75,7 @@ public class Fragment_today extends Fragment {
         recyclerView = rootView.findViewById(R.id.my_recycler_view);
         name = rootView.findViewById(R.id.name);
         logo = rootView.findViewById(R.id.logo);
+        layout_loading = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
         name.setText(AppController.getsharedprefString(Keys.userName));
 
@@ -93,7 +96,7 @@ public class Fragment_today extends Fragment {
 
 
     public void GetRouteByDate() {
-//        layout_loading.setVisibility(View.VISIBLE);
+        layout_loading.setVisibility(View.VISIBLE);
         AndroidNetworking.post(Keys.BaseURL + "api/Route/GetSalePersonRouteByDate")
                 .addBodyParameter("Date", "2017-10-09")
 //                .addBodyParameter("Date", AppController.getCurrentDate())
@@ -110,14 +113,14 @@ public class Fragment_today extends Fragment {
                         System.out.println("response: " + response.toString());
                         parseJsonFeed_rout(response);
 
-//                        layout_loading.setVisibility(View.GONE);
+                        layout_loading.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError(ANError error) {
                         System.out.println(error.getErrorCode() + " :" + error.getErrorBody());
 
-//                        layout_loading.setVisibility(View.GONE);
+                        layout_loading.setVisibility(View.GONE);
                     }
                 });
     }

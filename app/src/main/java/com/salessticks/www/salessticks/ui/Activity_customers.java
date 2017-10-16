@@ -1,6 +1,7 @@
 package com.salessticks.www.salessticks.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -40,10 +42,14 @@ public class Activity_customers extends BaseActivity {
     public  List<POJO_Customer> feedItems;
     ProgressBar layout_loading;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_customers);
+
+        getSupportActionBar().setTitle("Customers");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         layout_loading = (ProgressBar) findViewById(R.id.progressBar);
 
@@ -70,6 +76,19 @@ public class Activity_customers extends BaseActivity {
 
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
 
 
     public void GetCustomer() {
@@ -135,7 +154,7 @@ public class Activity_customers extends BaseActivity {
         TextView name, subtext;
 
         ViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.item_today, parent, false));
+            super(inflater.inflate(R.layout.item_customer, parent, false));
             name = itemView.findViewById(R.id.name);
             subtext = itemView.findViewById(R.id.subtext);
 
@@ -144,7 +163,10 @@ public class Activity_customers extends BaseActivity {
                 @Override
                 public void onClick(View v) {
 
-                    moveNextPagewitoutfinish(Activity_Category.class);
+                    Intent intent = new Intent(Activity_customers.this, Activity_Category.class);
+                    intent.putExtra(Keys.customerid, String.valueOf(feedItems.get(getAdapterPosition()).getCustomerid()));
+                    intent.putExtra(Keys.customername, String.valueOf(feedItems.get(getAdapterPosition()).getCustomerName()));
+                    startActivity(intent);
 
                 }
             });
@@ -162,6 +184,8 @@ public class Activity_customers extends BaseActivity {
 //                        items.setId(obj_catdata.getString("CustomerId"));
                     items.setName(obj_catdata.getString("RouteName"));
                     items.setRoutarea(obj_catdata.getString("Address"));
+                    items.setCustomerid(obj_catdata.getString("CustomerId"));
+                    items.setCustomerName(obj_catdata.getString("CustomerName"));
 
 
                     feedItems.add(items);

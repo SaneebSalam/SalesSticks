@@ -7,9 +7,12 @@ package com.salessticks.www.salessticks.adapter;
 
 public class POJO_Customer {
 
-    public POJO_Customer(String id, String name) {
+    public POJO_Customer(String customerid, String id, String name, int quantity, double price) {
+        this.customerid = customerid;
         this.id = id;
         this.name = name;
+        this.Quantity = quantity;
+        this.price = price;
     }
 
     public POJO_Customer() {
@@ -25,6 +28,48 @@ public class POJO_Customer {
     }
 
     private String id;
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    double price;
+
+    public int getQuantity() {
+        return Quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        Quantity = quantity;
+    }
+
+    int Quantity;
+
+    public String getCustomerid() {
+        return customerid;
+    }
+
+    public void setCustomerid(String customerid) {
+        this.customerid = customerid;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    private String customerName, customerid;
     private String name;
     private String routarea;
 
@@ -63,14 +108,6 @@ public class POJO_Customer {
         Date = date;
     }
 
-    public String getPrice() {
-        return Price;
-    }
-
-    public void setPrice(String price) {
-        Price = price;
-    }
-
     public String getTimeIn() {
         return TimeIn;
     }
@@ -89,5 +126,4 @@ public class POJO_Customer {
 
     private String TimeIn, TimeOut;
     private String Date;
-    private String Price;
 }

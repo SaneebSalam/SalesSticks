@@ -25,10 +25,13 @@ public class DB_Cart extends SQLiteOpenHelper {
     private final String TABLE_NAME = "cart";
 
     private static final String ID = "ID";
+    private static final String CustomerID = "CustomerID";
     private static final String Name = "Name";
+    private static final String Quantity = "Quantity";
+    private static final String Price = "Price";
 
     // Database Version
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
     String selectQuery;
     SQLiteDatabase database;
     Cursor cursor;
@@ -41,11 +44,10 @@ public class DB_Cart extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-//        query1 = "CREATE TABLE " + TABLE_NAME + "(" + ID + "TEXT PRIMARY KEY," + Name + " TEXT )";
 
         db.execSQL(
                 "create table cart " +
-                        "(ID integer primary key, Name text)"
+                        "(CustomerID integer , ID integer , Name text,  Quantity integer ,  Price double )"
         );
 
 //        db.execSQL(query1);
@@ -66,19 +68,22 @@ public class DB_Cart extends SQLiteOpenHelper {
 
         database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(CustomerID, temp.getCustomerid());
         values.put(ID, temp.getId());
         values.put(Name, temp.getName());
+        values.put(Quantity, temp.getQuantity());
+        values.put(Price, temp.getPrice());
 
         database.insert(TABLE_NAME, null, values);
         database.close();
 
     }
 
-    public synchronized List<POJO_Customer> getAlldetails(String Phonenumber) {
+    public synchronized List<POJO_Customer> getAlldetails(String customerID) {
         detailsList = new ArrayList<>();
 
-        selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + ID
-                + " =" + "'" + Name + "'";
+        selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + CustomerID
+                + " =" + "'" + customerID + "'";
 
         database = this.getReadableDatabase();
 
@@ -88,8 +93,11 @@ public class DB_Cart extends SQLiteOpenHelper {
             do {
                 POJO_Customer temp = new POJO_Customer();
 
-                temp.setId(cursor.getString(0));
-                temp.setName(cursor.getString(1));
+                temp.setCustomerid(cursor.getString(0));
+                temp.setId(cursor.getString(1));
+                temp.setName(cursor.getString(2));
+                temp.setQuantity(cursor.getInt(3));
+                temp.setPrice(cursor.getDouble(4));
 
                 detailsList.add(temp);
             } while (cursor.moveToNext());
@@ -97,6 +105,48 @@ public class DB_Cart extends SQLiteOpenHelper {
         cursor.close();
         database.close();
         return detailsList;
+    }
+
+
+    public synchronized List<POJO_Customer> getdetailsof_Item(String id) {
+        detailsList = new ArrayList<>();
+
+        selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + ID
+                + " =" + "'" + id + "'";
+
+        database = this.getReadableDatabase();
+
+        cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                POJO_Customer temp = new POJO_Customer();
+
+                temp.setCustomerid(cursor.getString(0));
+                temp.setId(cursor.getString(1));
+                temp.setName(cursor.getString(2));
+                temp.setQuantity(cursor.getInt(3));
+                temp.setPrice(cursor.getDouble(4));
+
+                detailsList.add(temp);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        database.close();
+        return detailsList;
+    }
+
+
+    public synchronized void Update_Item(POJO_Customer temp) {
+
+        database = this.getWritableDatabase();
+
+        database.execSQL("UPDATE " + TABLE_NAME + " " + "SET" + " " + Name
+                + "=" + "'" + temp.getName() + "'," + Quantity + "='"
+                + temp.getQuantity() + "' " + "WHERE " + ID + "=" + "'" + temp.getId()
+                + "'");
+
+        database.close();
     }
 
 //    public synchronized void updatename(String Phonenumber, String name,
@@ -116,10 +166,10 @@ public class DB_Cart extends SQLiteOpenHelper {
 //    }
 
 
-    public synchronized void removecontact(String name) {
+    public synchronized void removeitem(String id) {
         database = this.getWritableDatabase();
 
-        database.delete(this.TABLE_NAME, Name + "=" + name, null);
+        database.delete(this.TABLE_NAME, ID + "=" + id, null);
         database.close();
     }
 
