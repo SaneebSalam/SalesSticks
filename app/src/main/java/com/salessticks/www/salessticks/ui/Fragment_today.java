@@ -192,13 +192,20 @@ public class Fragment_today extends Fragment {
                 }
             }
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+            try {
 
-                    adapter.notifyDataSetChanged();
-                }
-            });
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
